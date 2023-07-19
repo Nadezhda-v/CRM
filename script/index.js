@@ -138,3 +138,21 @@ let goods = [
 ]
 
 renderGoods(goods);
+
+const panelAddGoods = document.querySelector('.panel__add-goods');
+const buttonModalClose = document.querySelector('.modal__close');
+const overlayModal = document.querySelector('.overlay__modal');
+
+panelAddGoods.addEventListener('click', () => {
+  overlay.classList.add('active');
+});
+
+buttonModalClose.addEventListener('click', () => {
+  overlay.classList.remove('active');
+});
+
+document.addEventListener('click', e => {
+  if(!overlayModal.contains(e.target) && e.target !== panelAddGoods) {
+    overlay.classList.remove('active');
+  };
+});
