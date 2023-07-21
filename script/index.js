@@ -189,6 +189,12 @@ table.addEventListener('click', e => {
     goods.splice(index, 1);
 
     rowItem.remove();
+
+    const rows = table.querySelectorAll('tr');
+    rows.forEach((row, index) => {
+      const cellOrder = row.querySelector('.table__cell');
+      cellOrder.textContent = index + 1;
+    });
   }
 
   console.log(goods);
