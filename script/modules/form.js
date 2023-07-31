@@ -41,6 +41,7 @@ const closeModal = () => {
 
 const modalControl = () => {
   panelAddGoods.addEventListener('click', () => {
+    modalTotalPrice.value = '$ ' + 0;
     openModal();
     itemId = generateId();
     updateIdOnForm(itemId);
@@ -57,8 +58,19 @@ const modalControl = () => {
 
 // Получение стоимости одного наименования товара
 
-const calcItemPrice = () => {
-  modalTotalPrice.value = '$' + countInput.value * priceInput.value;
+const calcTotalPriceInput = (discount) => {
+  const totalPrice = countInput.value * priceInput.value;
+  const finalPrice = discount ? totalPrice * (1 - discount / 100) : totalPrice;
+
+  modalTotalPrice.value = '$ ' + finalPrice.toFixed(2);
+  return finalPrice;
+};
+
+// Пересчет общей стоимости товара на основе текущих значений полей ввода
+
+const updateTotalPrice = () => {
+  const totalPrice = calcTotalPriceInput(+modalInputDiscount.value);
+  return totalPrice;
 };
 
 /* Разблокировка и блокировка поля ввода скидки
@@ -70,16 +82,22 @@ const toggleDiscountInput = (disabled) => {
 };
 
 const formControl = () => {
+  let totalPrice;
+
   modalCheckbox.addEventListener('change', () => {
     toggleDiscountInput(!modalCheckbox.checked);
   });
 
   countInput.addEventListener('input', () => {
-    calcItemPrice();
+    totalPrice = updateTotalPrice();
   });
 
   priceInput.addEventListener('input', () => {
-    calcItemPrice();
+    totalPrice = updateTotalPrice();
+  });
+
+  modalInputDiscount.addEventListener('input', () => {
+    totalPrice = updateTotalPrice();
   });
 
   // Заполнение и отправка формы
@@ -89,7 +107,8 @@ const formControl = () => {
     const formData = new FormData(e.target);
 
     const newItem = Object.fromEntries(formData);
-    addItemPage(newItem, itemId);
+
+    addItemPage(newItem, itemId, totalPrice);
     goods.push(newItem);
 
     form.reset();

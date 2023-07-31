@@ -1,6 +1,6 @@
 import {
   renderGoods,
-  calcTotalPrice,
+  calcTotalPriceAllGoods,
 } from './modules/table.js';
 
 import {
@@ -91,7 +91,7 @@ export const goods = [
 
 const init = () => {
   renderGoods(goods);
-  calcTotalPrice();
+  calcTotalPriceAllGoods();
 
   modalControl();
   formControl();

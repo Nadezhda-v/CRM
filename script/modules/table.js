@@ -6,13 +6,11 @@ import {
 
 import {goods} from '../index.js';
 
-let count; // Номер товара в таблице
-
-const createRow = (item) => {
+const createRow = (item, order, totalPrice) => {
   const rowItem = document.createElement('tr');
   const cellOrder = document.createElement('td');
   cellOrder.className = 'table__cell';
-  cellOrder.textContent = count;
+  cellOrder.textContent = order;
 
   const cellName = document.createElement('td');
   cellName.className = 'table__cell table__cell_left table__cell_name';
@@ -41,7 +39,7 @@ const createRow = (item) => {
 
   const cellSum = document.createElement('td');
   cellSum.className = 'table__cell table__cell_total-price';
-  cellSum.textContent = '$' + item.count * item.price;
+  cellSum.textContent = '$' + totalPrice;
 
   const cellButtons = document.createElement('td');
   cellButtons.className = 'table__cell table__cell_btn-wrapper';
@@ -66,55 +64,48 @@ const createRow = (item) => {
 
 // Обновление нумерации товаров при удалении
 
-const updateNumberItem = (index) => {
+const updateNumberItem = () => {
   const rows = table.querySelectorAll('tr');
   rows.forEach((row, index) => {
     const cellOrder = row.querySelector('.table__cell');
     cellOrder.textContent = index + 1;
   });
-  count = rows.length + 1;
 };
-
-let totalPrice = 0;
 
 // Получение общей стоимости всех товаров в таблице
 
-const calcTotalPrice = () => {
+const calcTotalPriceAllGoods = () => {
+  let totalPrice = 0;
   const allRows = table.querySelectorAll('tr');
-  const arrAllRows = [...allRows];
-  const arrTotalPrice = [];
 
-  arrAllRows.forEach(row => {
+  allRows.forEach(row => {
     const itemTotalPrice = +row.querySelector('.table__cell_total-price')
         .textContent
         .slice(1);
-    arrTotalPrice.push(itemTotalPrice);
+    totalPrice += itemTotalPrice;
   });
 
-  totalPrice = arrTotalPrice.reduce((acc, itemPrice) => acc + itemPrice, 0);
-
-  cmsTotalPrice.textContent = '$ ' + totalPrice;
+  cmsTotalPrice.textContent = '$ ' + totalPrice.toFixed(2);
 };
 
 /* Пересчет общей стоимости товаров в таблице
 после удаления или добавления товара*/
 
-const updateTotalPrice = (itemTotalPrice) => {
-  totalPrice += itemTotalPrice;
-  cmsTotalPrice.textContent = '$ ' + totalPrice;
+const updateTotalPriceAllGoods = (itemTotalPrice) => {
+  let currentTotalPrice = +cmsTotalPrice.textContent.slice(1);
+  currentTotalPrice += itemTotalPrice;
+  cmsTotalPrice.textContent = '$ ' + currentTotalPrice.toFixed(2);
 };
 
 // Добавление товара на страницу
 
-const addItemPage = (newItem, itemId) => {
+const addItemPage = (newItem, itemId, totalPrice) => {
+  const rowsTable = table.querySelectorAll('tr');
   newItem.id = itemId;
-  const rowItem = createRow(newItem);
-  newItem.count = count++;
+  const rowItem = createRow(newItem, rowsTable.length + 1, totalPrice);
   table.append(rowItem);
 
-  const itemTotalPrice = newItem.count * newItem.price;
-
-  updateTotalPrice(itemTotalPrice);
+  updateTotalPriceAllGoods(totalPrice);
 };
 
 // Удаление товара из таблицы
@@ -134,21 +125,22 @@ const deleteItem = () => {
           .textContent
           .slice(1);
 
-      updateTotalPrice(-itemTotalPrice);
+      updateTotalPriceAllGoods(-itemTotalPrice);
 
       rowItem.remove();
 
-      updateNumberItem(index);
+      updateNumberItem();
       console.log(goods);
     }
   });
 };
 
 const renderGoods = (arr) => {
-  count = rowsTable.length + 1;
+  let order = rowsTable.length + 1; // Порядковый номер в таблице
   arr.forEach(element => {
-    const rowItem = createRow(element);
-    count++;
+    const totalPrice = element.count * element.price;
+    const rowItem = createRow(element, order, totalPrice);
+    order++;
     table.append(rowItem);
   });
 };
@@ -156,6 +148,6 @@ const renderGoods = (arr) => {
 export {
   renderGoods,
   addItemPage,
-  calcTotalPrice,
+  calcTotalPriceAllGoods,
   deleteItem,
 };
