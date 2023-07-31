@@ -13,7 +13,7 @@
 
   <link rel="stylesheet" href="css/index.css">
 
-  <script src="script/index.js" defer></script>
+  <script type="module" src="script/index.js"></script>
   <title>CMS</title>
 </head>
 
@@ -98,7 +98,7 @@
     </div>
   </section>
 
-  <div class="overlay active">
+  <div class="overlay">
     <div class="overlay__modal modal">
       <button class="modal__close">
         <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -139,8 +139,8 @@
           <div class="modal__label modal__label_discount">
             <label class="modal__text" for="discount">Дисконт</label>
             <div class="modal__checkbox-wrapper">
-              <input class="modal__checkbox" type="checkbox" name="discount" id="discount" required>
-              <input class="modal__input modal__input_discount" type="text" name="discount_count" disabled required>
+              <input class="modal__checkbox" type="checkbox" name="discount" id="discount">
+              <input class="modal__input modal__input_discount" type="number"  min="1" max="100" name="discount_count" disabled>
             </div>
           </div>
 
