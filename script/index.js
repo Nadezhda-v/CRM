@@ -10,6 +10,7 @@ import {
 
 import {
   deleteItem,
+  handleButtonPic,
 } from './modules/table.js';
 
 export const goods = [
@@ -96,6 +97,7 @@ const init = () => {
   modalControl();
   formControl();
   deleteItem();
+  handleButtonPic();
 };
 
 init();

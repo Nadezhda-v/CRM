@@ -46,6 +46,7 @@ const createRow = (item, order, totalPrice) => {
 
   const buttonPic = document.createElement('button');
   buttonPic.className = 'table__btn table__btn_pic';
+  buttonPic.dataset.pic = 'img/image.jpg';
 
   const buttonEdit = document.createElement('button');
   buttonEdit.className = 'table__btn table__btn_edit';
@@ -135,6 +136,45 @@ const deleteItem = () => {
   });
 };
 
+const openWindow = (url, width, height) => {
+  const screenWidth = screen.width;
+  const screenHeight = screen.height;
+
+  const left = (screenWidth - width) / 2;
+  const top = (screenHeight - height) / 2;
+
+  const win = open(
+      url,
+      '',
+      `width=${width}, height=${height}, left=${left}, top=${top}`,
+  );
+
+  return win;
+};
+
+const openImage = (imgUrl) => {
+  const win = openWindow('about:blank', 800, 600);
+
+  const image = document.createElement('img');
+  image.src = imgUrl;
+  image.alt = 'Изображение товара';
+
+  win.document.body.append(image);
+};
+
+const handleButtonPic = () => {
+  table.addEventListener('click', e => {
+    const target = e.target;
+    const buttonPic = target.closest('.table__btn_pic');
+    const imgUrlRelative = buttonPic.getAttribute('data-pic');
+
+    if (buttonPic) {
+      const imgUrl = `${location.origin}/${imgUrlRelative}`;
+      openImage(imgUrl);
+    }
+  });
+};
+
 const renderGoods = (arr) => {
   let order = rowsTable.length + 1; // Порядковый номер в таблице
   arr.forEach(element => {
@@ -150,4 +190,5 @@ export {
   addItemPage,
   calcTotalPriceAllGoods,
   deleteItem,
+  handleButtonPic,
 };
