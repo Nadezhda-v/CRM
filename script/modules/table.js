@@ -162,6 +162,8 @@ const openImage = (imgUrl) => {
   win.document.body.append(image);
 };
 
+const currentUrl = location.origin;
+
 const handleButtonPic = () => {
   table.addEventListener('click', e => {
     const target = e.target;
@@ -169,7 +171,7 @@ const handleButtonPic = () => {
     const imgUrlRelative = buttonPic.getAttribute('data-pic');
 
     if (buttonPic) {
-      const imgUrl = `${location.origin}/${imgUrlRelative}`;
+      const imgUrl = `${currentUrl}/${imgUrlRelative}`;
       openImage(imgUrl);
     }
   });
