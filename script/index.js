@@ -1,16 +1,17 @@
 import {
   renderGoods,
+} from './modules/render.js';
+
+import {
   calcTotalPriceAllGoods,
-} from './modules/table.js';
+} from './modules/calculations.js';
 
 import {
   modalControl,
   formControl,
-} from './modules/form.js';
-
-import {
   deleteItem,
-} from './modules/table.js';
+  handleButtonPic,
+} from './modules/interactions.js';
 
 export const goods = [
   {
@@ -96,6 +97,7 @@ const init = () => {
   modalControl();
   formControl();
   deleteItem();
+  handleButtonPic();
 };
 
 init();
