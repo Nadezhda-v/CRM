@@ -14,6 +14,9 @@ const panelAddGoods = document.querySelector('.panel__add-goods');
 const table = document.querySelector('.table__body');
 const rowsTable = table.querySelectorAll('tr');
 
+const modalFile = form.querySelector('.modal__file');
+const modalLabelFile = form.querySelector('.modal__label_file');
+
 export {
   overlay,
   table,
@@ -27,4 +30,6 @@ export {
   cmsTotalPrice,
   modalCheckbox,
   modalInputDiscount,
+  modalFile,
+  modalLabelFile,
 };

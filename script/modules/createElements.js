@@ -1,4 +1,4 @@
-export const createRow = (item, order, totalPrice) => {
+const createRow = (item, order, totalPrice) => {
   const rowItem = document.createElement('tr');
   const cellOrder = document.createElement('td');
   cellOrder.className = 'table__cell';
@@ -53,4 +53,30 @@ export const createRow = (item, order, totalPrice) => {
   cellButtons.append(buttonPic, buttonEdit, buttonDel);
 
   return rowItem;
+};
+
+const createImage = () => {
+  const imageContainer = document.createElement('div');
+  imageContainer.classList.add('image-container');
+
+  const img = document.createElement('img');
+  img.classList.add('modal__label_file-add');
+  img.alt = 'Изображение товара';
+
+  imageContainer.append(img);
+  return {imageContainer, img};
+};
+
+const createBlockWithError = (text, className) => {
+  const blockWithError = document.createElement('span');
+  blockWithError.className = className;
+  blockWithError.textContent = text;
+
+  return blockWithError;
+};
+
+export {
+  createRow,
+  createImage,
+  createBlockWithError,
 };

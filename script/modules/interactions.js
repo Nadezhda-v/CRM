@@ -9,10 +9,14 @@ import {
   modalInputDiscount,
   modalCheckbox,
   form,
+  modalFile,
+  modalLabelFile,
 } from './getElements.js';
 
 import {
   createRow,
+  createImage,
+  createBlockWithError,
 } from './createElements.js';
 
 import {
@@ -175,6 +179,46 @@ const formControl = () => {
     const target = e.target;
     if (target.matches('.modal__input[type="number"]')) {
       totalPrice = updateTotalPrice();
+    }
+  });
+
+  // Отображение изображения в форме
+
+  modalFile.addEventListener('change', () => {
+    const imageContainer = form.querySelector('.image-container');
+
+    if (imageContainer) {
+      imageContainer.remove();
+    }
+
+    if (modalFile.files.length > 0) {
+      const file = modalFile.files[0];
+      const maxSize = 1 * 1024 * 1024; // 1 МБ в байтах
+
+      if (file.size >= maxSize) {
+        const blockWithError = createBlockWithError(
+            'Изображение не должно превышать размер 1 МБ',
+            'modal__label_file-error');
+        modalLabelFile.before(blockWithError);
+      } else {
+        const blockWithError = document.querySelector(
+            '.modal__label_file-error');
+
+        if (blockWithError) {
+          blockWithError.remove();
+        }
+        const src = URL.createObjectURL(file);
+        const {imageContainer, img} = createImage();
+        img.src = src;
+
+        modalFile.after(imageContainer);
+        imageContainer.style.display = 'block';
+
+        imageContainer.addEventListener('click', (e) => {
+          e.stopPropagation(); // Предотвращение всплытия события
+          imageContainer.remove();
+        });
+      }
     }
   });
 
