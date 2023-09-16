@@ -7,10 +7,7 @@ import {
 } from './modules/calculations.js';
 
 import {
-  modalControl,
-  formControl,
-  deleteItem,
-  handleButtonPic,
+  control,
 } from './modules/interactions.js';
 
 export const goods = [
@@ -92,12 +89,9 @@ export const goods = [
 
 const init = () => {
   renderGoods(goods);
-  calcTotalPriceAllGoods();
 
-  modalControl();
-  formControl();
-  deleteItem();
-  handleButtonPic();
+  calcTotalPriceAllGoods();
+  control();
 };
 
 init();

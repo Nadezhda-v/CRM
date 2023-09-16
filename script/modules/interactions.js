@@ -45,33 +45,6 @@ const updateNumberItem = () => {
   });
 };
 
-// Удаление товаров из таблицы
-
-const deleteItem = () => {
-  table.addEventListener('click', e => {
-    const target = e.target;
-
-    if (target.closest('.table__btn_del')) {
-      const rowItem = target.closest('tr');
-      const dataId = rowItem.querySelector('.table__cell_name').dataset.id;
-      const index = goods.findIndex(item => item.id === +dataId);
-
-      goods.splice(index, 1);
-
-      const itemTotalPrice = +rowItem.querySelector('.table__cell_total-price')
-          .textContent
-          .slice(1);
-
-      updateTotalPriceAllGoods(-itemTotalPrice);
-
-      rowItem.remove();
-
-      updateNumberItem();
-      console.log(goods);
-    }
-  });
-};
-
 // Открытие нового окна браузера
 
 const openWindow = (url, width, height) => {
@@ -100,23 +73,6 @@ const openImage = (imgUrl) => {
   win.document.body.append(image);
 };
 
-// Открытие изображения товара
-
-const handleButtonPic = () => {
-  const currentUrl = location.origin;
-
-  table.addEventListener('click', e => {
-    const target = e.target;
-    const buttonPic = target.closest('.table__btn_pic');
-
-    if (buttonPic) {
-      const imgUrlRelative = buttonPic.getAttribute('data-pic');
-      const imgUrl = `${currentUrl}/${imgUrlRelative}`;
-      openImage(imgUrl);
-    }
-  });
-};
-
 let itemId;
 
 // Генерирование случайного id
@@ -142,7 +98,55 @@ const closeModal = () => {
   overlay.classList.remove('active');
 };
 
-const modalControl = () => {
+/* Разблокировка и блокировка поля ввода скидки
+в зависимости от состояния чекбокса 'discount'*/
+
+const toggleDiscountInput = (disabled) => {
+  modalInputDiscount.value = '';
+  modalInputDiscount.disabled = disabled;
+};
+
+const control = () => {
+  // Удаление товаров из таблицы
+  table.addEventListener('click', e => {
+    const target = e.target;
+
+    if (target.closest('.table__btn_del')) {
+      const rowItem = target.closest('tr');
+      const dataId = rowItem.querySelector('.table__cell_name').dataset.id;
+      const index = goods.findIndex(item => item.id === +dataId);
+
+      goods.splice(index, 1);
+
+      const itemTotalPrice = +rowItem.querySelector(
+          '.table__cell_total-price')
+          .textContent
+          .slice(1);
+
+      updateTotalPriceAllGoods(-itemTotalPrice);
+
+      rowItem.remove();
+
+      updateNumberItem();
+      console.log(goods);
+    }
+  });
+
+  // Открытие изображения товара
+  const currentUrl = location.origin;
+
+  table.addEventListener('click', e => {
+    const target = e.target;
+    const buttonPic = target.closest('.table__btn_pic');
+
+    if (buttonPic) {
+      const imgUrlRelative = buttonPic.getAttribute('data-pic');
+      const imgUrl = `${currentUrl}/${imgUrlRelative}`;
+      openImage(imgUrl);
+    }
+  });
+
+
   panelAddGoods.addEventListener('click', () => {
     modalTotalPrice.value = '$ ' + 0;
     openModal();
@@ -157,17 +161,7 @@ const modalControl = () => {
       closeModal();
     }
   });
-};
 
-/* Разблокировка и блокировка поля ввода скидки
-в зависимости от состояния чекбокса 'discount'*/
-
-const toggleDiscountInput = (disabled) => {
-  modalInputDiscount.value = '';
-  modalInputDiscount.disabled = disabled;
-};
-
-const formControl = () => {
   let totalPrice;
 
   modalCheckbox.addEventListener('change', () => {
@@ -241,10 +235,7 @@ const formControl = () => {
 };
 
 export {
-  formControl,
-  modalControl,
-  deleteItem,
-  handleButtonPic,
+  control,
   addItemPage,
   updateTotalPriceAllGoods,
   updateNumberItem,
