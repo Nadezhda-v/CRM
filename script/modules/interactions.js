@@ -9,10 +9,14 @@ import {
   modalInputDiscount,
   modalCheckbox,
   form,
+  modalFile,
+  modalLabelFile,
 } from './getElements.js';
 
 import {
   createRow,
+  createImage,
+  createBlockWithError,
 } from './createElements.js';
 
 import {
@@ -38,33 +42,6 @@ const updateNumberItem = () => {
   rows.forEach((row, index) => {
     const cellOrder = row.querySelector('.table__cell');
     cellOrder.textContent = index + 1;
-  });
-};
-
-// Удаление товаров из таблицы
-
-const deleteItem = () => {
-  table.addEventListener('click', e => {
-    const target = e.target;
-
-    if (target.closest('.table__btn_del')) {
-      const rowItem = target.closest('tr');
-      const dataId = rowItem.querySelector('.table__cell_name').dataset.id;
-      const index = goods.findIndex(item => item.id === +dataId);
-
-      goods.splice(index, 1);
-
-      const itemTotalPrice = +rowItem.querySelector('.table__cell_total-price')
-          .textContent
-          .slice(1);
-
-      updateTotalPriceAllGoods(-itemTotalPrice);
-
-      rowItem.remove();
-
-      updateNumberItem();
-      console.log(goods);
-    }
   });
 };
 
@@ -96,23 +73,6 @@ const openImage = (imgUrl) => {
   win.document.body.append(image);
 };
 
-// Открытие изображения товара
-
-const handleButtonPic = () => {
-  const currentUrl = location.origin;
-
-  table.addEventListener('click', e => {
-    const target = e.target;
-    const buttonPic = target.closest('.table__btn_pic');
-
-    if (buttonPic) {
-      const imgUrlRelative = buttonPic.getAttribute('data-pic');
-      const imgUrl = `${currentUrl}/${imgUrlRelative}`;
-      openImage(imgUrl);
-    }
-  });
-};
-
 let itemId;
 
 // Генерирование случайного id
@@ -138,7 +98,55 @@ const closeModal = () => {
   overlay.classList.remove('active');
 };
 
-const modalControl = () => {
+/* Разблокировка и блокировка поля ввода скидки
+в зависимости от состояния чекбокса 'discount'*/
+
+const toggleDiscountInput = (disabled) => {
+  modalInputDiscount.value = '';
+  modalInputDiscount.disabled = disabled;
+};
+
+const control = () => {
+  // Удаление товаров из таблицы
+  table.addEventListener('click', e => {
+    const target = e.target;
+
+    if (target.closest('.table__btn_del')) {
+      const rowItem = target.closest('tr');
+      const dataId = rowItem.querySelector('.table__cell_name').dataset.id;
+      const index = goods.findIndex(item => item.id === +dataId);
+
+      goods.splice(index, 1);
+
+      const itemTotalPrice = +rowItem.querySelector(
+          '.table__cell_total-price')
+          .textContent
+          .slice(1);
+
+      updateTotalPriceAllGoods(-itemTotalPrice);
+
+      rowItem.remove();
+
+      updateNumberItem();
+      console.log(goods);
+    }
+  });
+
+  // Открытие изображения товара
+  const currentUrl = location.origin;
+
+  table.addEventListener('click', e => {
+    const target = e.target;
+    const buttonPic = target.closest('.table__btn_pic');
+
+    if (buttonPic) {
+      const imgUrlRelative = buttonPic.getAttribute('data-pic');
+      const imgUrl = `${currentUrl}/${imgUrlRelative}`;
+      openImage(imgUrl);
+    }
+  });
+
+
   panelAddGoods.addEventListener('click', () => {
     modalTotalPrice.value = '$ ' + 0;
     openModal();
@@ -153,17 +161,7 @@ const modalControl = () => {
       closeModal();
     }
   });
-};
 
-/* Разблокировка и блокировка поля ввода скидки
-в зависимости от состояния чекбокса 'discount'*/
-
-const toggleDiscountInput = (disabled) => {
-  modalInputDiscount.value = '';
-  modalInputDiscount.disabled = disabled;
-};
-
-const formControl = () => {
   let totalPrice;
 
   modalCheckbox.addEventListener('change', () => {
@@ -175,6 +173,46 @@ const formControl = () => {
     const target = e.target;
     if (target.matches('.modal__input[type="number"]')) {
       totalPrice = updateTotalPrice();
+    }
+  });
+
+  // Отображение изображения в форме
+
+  modalFile.addEventListener('change', () => {
+    const imageContainer = form.querySelector('.image-container');
+
+    if (imageContainer) {
+      imageContainer.remove();
+    }
+
+    if (modalFile.files.length > 0) {
+      const file = modalFile.files[0];
+      const maxSize = 1 * 1024 * 1024; // 1 МБ в байтах
+
+      if (file.size >= maxSize) {
+        const blockWithError = createBlockWithError(
+            'Изображение не должно превышать размер 1 МБ',
+            'modal__label_file-error');
+        modalLabelFile.before(blockWithError);
+      } else {
+        const blockWithError = document.querySelector(
+            '.modal__label_file-error');
+
+        if (blockWithError) {
+          blockWithError.remove();
+        }
+        const src = URL.createObjectURL(file);
+        const {imageContainer, img} = createImage();
+        img.src = src;
+
+        modalFile.after(imageContainer);
+        imageContainer.style.display = 'block';
+
+        imageContainer.addEventListener('click', (e) => {
+          e.stopPropagation(); // Предотвращение всплытия события
+          imageContainer.remove();
+        });
+      }
     }
   });
 
@@ -197,10 +235,7 @@ const formControl = () => {
 };
 
 export {
-  formControl,
-  modalControl,
-  deleteItem,
-  handleButtonPic,
+  control,
   addItemPage,
   updateTotalPriceAllGoods,
   updateNumberItem,
