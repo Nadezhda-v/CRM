@@ -23,3 +23,18 @@
   bottom: 0;
   margin: auto;
 }
+
+.overlay__modal-action {
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.overlay__modal-action.active {
+  display: flex;
+}
