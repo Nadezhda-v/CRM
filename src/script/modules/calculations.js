@@ -5,9 +5,9 @@ import {
   priceInput,
   modalTotalPrice,
   modalInputDiscount,
-} from './getElements.js';
+} from './getElements';
 
-import {formattedPrice} from './interactions.js';
+import {formattedPrice} from './interactions';
 
 // Получение общей стоимости всех товаров в таблице
 

@@ -16,29 +16,29 @@ import {
   choicePage,
   buttonFilter,
   searchInput,
-} from './getElements.js';
+} from './getElements';
 
 import {
   createRow,
   createImage,
   createBlockWithError,
   createModal,
-} from './createElements.js';
+} from './createElements';
 
 import {
   updateTotalPriceAllGoods,
   updateTotalPrice,
   calcTotalPriceAllGoods,
-} from './calculations.js';
+} from './calculations';
 
 import {
   urlServ,
   fetchRequest,
-} from './fetchRequest.js';
+} from './fetchRequest';
 
 import {
   renderGoods,
-} from './render.js';
+} from './render';
 
 // Добавление товара на страницу
 
@@ -241,7 +241,7 @@ const control = () => {
       const imgUrlRelative = buttonPic.getAttribute('data-pic');
 
       if (pathImagePattern.test(imgUrlRelative)) {
-        const imgUrl = `${urlServ}/${imgUrlRelative}`;
+        const imgUrl = `${urlServ}${imgUrlRelative}`;
         openImage(imgUrl);
       }
     }
@@ -287,6 +287,7 @@ const control = () => {
   });
 
   panelAddGoods.addEventListener('click', () => {
+    delPrevImage();
     form.reset();
     modalTotalPrice.value = '$ ' + 0;
     updateIdOnForm('');

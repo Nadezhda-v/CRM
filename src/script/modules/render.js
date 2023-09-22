@@ -1,24 +1,19 @@
-import {fetchRequest} from './fetchRequest.js';
-
-import {
-  createRow,
-} from './createElements.js';
+import {fetchRequest} from './fetchRequest';
+import {createRow} from './createElements';
 
 import {
   table,
   rowsTable,
   modalLabelCategory,
   buttonFilter,
-} from './getElements.js';
+} from './getElements';
 
 import {
   calcTotalPriceAllGoods,
   getTotalPrice,
-} from './calculations.js';
+} from './calculations';
 
-import {
-  updatePagination,
-} from './interactions.js';
+import {updatePagination} from './interactions';
 
 const renderCategory = (err, categories) => {
   if (err) {
