@@ -352,6 +352,13 @@ const control = () => {
     }
   });
 
+  const handleRequestSuccess = () => {
+    closeModal(overlay);
+    form.reset();
+    delPrevImage();
+    toggleDiscountInput(true);
+  };
+
   // Заполнение и отправка формы
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -365,22 +372,23 @@ const control = () => {
     } else {
       image = [];
     }
-    console.log(idOnForm.textContent);
+
     const itemId = idOnForm.textContent;
+    const requestBody = {
+      title: formData.get('title'),
+      category: formData.get('category'),
+      description: formData.get('description'),
+      units: formData.get('units'),
+      discount: +formData.get('discount'),
+      count: +formData.get('count'),
+      price: +formData.get('price'),
+      image,
+    };
 
     if (itemId) {
       fetchRequest(`api/goods/${itemId}`, {
         method: 'PATCH',
-        body: {
-          title: formData.get('title'),
-          category: formData.get('category'),
-          description: formData.get('description'),
-          units: formData.get('units'),
-          discount: +formData.get('discount'),
-          count: +formData.get('count'),
-          price: +formData.get('price'),
-          image,
-        },
+        body: requestBody,
         callback(err, data) {
           if (err) {
             addModalError(err);
@@ -388,13 +396,10 @@ const control = () => {
             const totalPrice = modalTotalPrice.textContent
                 .split('.')[0]
                 .replace(/\$\s/g, '');
+
             updateRowById(data, totalPrice);
             calcTotalPriceAllGoods();
-
-            closeModal(overlay);
-            form.reset();
-            delPrevImage();
-            toggleDiscountInput(true);
+            handleRequestSuccess();
           }
         },
         headers: {
@@ -404,26 +409,13 @@ const control = () => {
     } else {
       fetchRequest('api/goods', {
         method: 'POST',
-        body: {
-          title: formData.get('title'),
-          category: formData.get('category'),
-          description: formData.get('description'),
-          units: formData.get('units'),
-          discount: +formData.get('discount'),
-          count: +formData.get('count'),
-          price: +formData.get('price'),
-          image,
-        },
+        body: requestBody,
         callback(err, data) {
           if (err) {
             addModalError(err);
           } else {
             addItemPage(data, totalPrice);
-
-            closeModal(overlay);
-            form.reset();
-            delPrevImage();
-            toggleDiscountInput(true);
+            handleRequestSuccess();
           }
         },
         headers: {
@@ -542,7 +534,6 @@ const control = () => {
   // Обработка поискового запроса
   searchInput.addEventListener('input', () => {
     const inputValue = searchInput.value;
-    console.log(inputValue);
 
     setTimeout(async () => {
       if (searchInput.value === inputValue) {
