@@ -11,9 +11,6 @@
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/index.css">
-
-  <script type="module" src="script/index.js"></script>
   <title>CMS</title>
 </head>
 
@@ -25,7 +22,7 @@
         <h1 class="cms__title">CMS - ShopOnline</h1>
 
         <p class="cms__total">Итоговая стоимость:
-          <span class="cms__total-price">$ 900.00</span>
+          <span class="cms__total-price">$ 0.00</span>
         </p>
       </header>
 
@@ -33,9 +30,9 @@
         <div class="goods__panel panel">
           <button class="panel__filter">Фильтр</button>
           <form class="panel__search">
-            <input type="search" class="panel__input" placeholder="Поиск по наименованию и категории">
+            <input type="search" class="panel__input" placeholder="Поиск по наименованию товара">
           </form>
-          <button class="panel__add-goods">Добавить товар</button>
+          <button class="button panel__add-goods">Добавить товар</button>
         </div>
         <div class="goods__table-wrapper">
           <table class="goods__table table">
@@ -51,45 +48,17 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody class="table__body">
-              <!--<tr>
-                <td class="table__cell">1</td>
-                <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
-                  <span class="table__cell-id">id: 24601654816512</span>
-                  Навигационная система Soundmax
-                </td>
-                <td class="table__cell table__cell_left">Техника для дома</td>
-                <td class="table__cell">шт</td>
-                <td class="table__cell">5</td>
-                <td class="table__cell">$100</td>
-                <td class="table__cell">$500</td>
-                <td class="table__cell table__cell_btn-wrapper">
-                  <button class="table__btn table__btn_pic"></button>
-                  <button class="table__btn table__btn_edit"></button>
-                  <button class="table__btn table__btn_del"></button>
-                </td>
-              </tr>
-              <tr>
-                <td class="table__cell ">2</td>
-                <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
-                  <span class="table__cell-id">id: 24601654816512</span>Телевизор DEXP
-                </td>
-                <td class="table__cell table__cell_left">Техника для дома</td>
-                <td class="table__cell">шт</td>
-                <td class="table__cell">15</td>
-                <td class="table__cell">$1000</td>
-                <td class="table__cell">$15000</td>
-                <td class="table__cell table__cell_btn-wrapper">
-                  <button class="table__btn table__btn_pic"></button>
-                  <button class="table__btn table__btn_edit"></button>
-                  <button class="table__btn table__btn_del"></button>
-                </td>
-              </tr>-->
-            </tbody>
+            <tbody class="table__body"></tbody>
           </table>
         </div>
         <div class="sub-panel">
-          <p class="sub-panel__choice-pages">Показывать на странице: 5</p>
+          <p class="sub-panel__choice-pages">Показывать на странице: 
+            <select id="choicePage">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </p>
           <p class="sub-panel__pages">1-10 из 48</p>
           <a href="#" class="sub-panel__left"></a>
           <a href="#" class="sub-panel__right"></a>
@@ -123,7 +92,7 @@
 
           <label class="modal__label modal__label_category" for="category">
             <span class="modal__text">Категория</span>
-            <input class="modal__input" type="text" name="category" id="category" required>
+            <input class="modal__input" type="text" name="category" id="category" list="category-list" required>
           </label>
 
           <label class="modal__label modal__label_description" for="description">
@@ -139,8 +108,8 @@
           <div class="modal__label modal__label_discount">
             <label class="modal__text" for="discount">Дисконт</label>
             <div class="modal__checkbox-wrapper">
-              <input class="modal__checkbox" type="checkbox" name="discount" id="discount">
-              <input class="modal__input modal__input_discount" type="number"  min="1" max="100" name="discount_count" disabled>
+              <input class="modal__checkbox" type="checkbox" name="discount_check" id="discount">
+              <input class="modal__input modal__input_discount" type="number"  min="1" max="100" name="discount" disabled>
             </div>
           </div>
 
@@ -163,7 +132,7 @@
             <output class="modal__total-price" name="total">$ 900.00</output>
           </label>
 
-          <button class="modal__submit" type="submit">Добавить товар</button>
+          <button class="button modal__submit" type="submit">Добавить товар</button>
         </div>
       </form>
     </div>

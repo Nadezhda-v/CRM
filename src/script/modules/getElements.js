@@ -17,6 +17,17 @@ const rowsTable = table.querySelectorAll('tr');
 const modalFile = form.querySelector('.modal__file');
 const modalLabelFile = form.querySelector('.modal__label_file');
 
+const modalLabelCategory = form.querySelector('.modal__label_category');
+const idOnForm = overlayModal.querySelector('.vendor-code__id');
+const modalTitle = document.querySelector('.modal__title');
+const modalSubmit = form.querySelector('.modal__submit');
+
+const subPanelPages = document.querySelector('.sub-panel__pages');
+const choicePage = document.querySelector('#choicePage');
+const buttonFilter = document.querySelector('.panel__filter');
+const panelList = document.querySelector('.panel__list');
+const searchInput = document.querySelector('.panel__input');
+
 export {
   overlay,
   table,
@@ -32,4 +43,13 @@ export {
   modalInputDiscount,
   modalFile,
   modalLabelFile,
+  modalLabelCategory,
+  idOnForm,
+  modalTitle,
+  modalSubmit,
+  subPanelPages,
+  choicePage,
+  buttonFilter,
+  panelList,
+  searchInput,
 };
